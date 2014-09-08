@@ -34,3 +34,15 @@
 ;; creates a sequence by taking the 1st elements of the 2 collections, then
 ;; the second, etc..
 ;; #(interleave % %)
+
+(defn my-range
+  "MY implementation of range"
+  [min-val max-val]
+  (loop [x min-val result '()]
+    (if (>= x max-val)
+      (reverse result)
+      (recur (inc x) (conj result x)))))
+
+;; I like this solution the best, I think we are looking for take-while here
+;; #(take-while (fn [x] (< x %2)) (iterate inc %1))
+;; here, the x represents the values in the list created by iterate
