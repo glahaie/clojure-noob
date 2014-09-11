@@ -91,3 +91,24 @@
 ;;I always have to return a value in the fn given to reduce.
 ;;This seems like the most popular solution:
 ;;#(map first (partition-by identity %))
+
+;;Replicate a sequence a number of times
+(defn my-replicate
+  "[coll] int Replicate a sequence a given number of times"
+  [coll nb]
+  (mapcat #(take nb (iterate identity %)) coll))
+
+;;My solution is close to the most interesting one. I was looking for the repeat
+;;function, instead of having to use take and iterate
+;; that result is: #(mapcat (partial repeat %2) %1) 
+
+(defn my-pack
+  "Packs a sequence into subsequences of consecutive same items"
+  [coll]
+  (partition-by identity coll))
+;; this seems like the most popular solution
+
+(defn my-interpose
+  "[seq val] Interposes a sequence by a given value"
+  [value coll]
+  (vec (reduce #(concat %1 [%2] [value]) [] coll)))
