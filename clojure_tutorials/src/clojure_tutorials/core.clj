@@ -111,4 +111,21 @@
 (defn my-interpose
   "[seq val] Interposes a sequence by a given value"
   [value coll]
-  (vec (reduce #(concat %1 [%2] [value]) [] coll)))
+  (drop-last
+    (mapcat #(conj [] % value) coll)))
+
+;; my original version used reduce instead, i think the problem was mostly
+;; that I was not dropping the last element, so I was failing the unit tests.
+
+(defn my-interpose2
+  "[seq val] Interposes seq with value val"
+  [value coll]
+  (vec (drop-last (interleave coll (repeat value)))))
+
+;; Another version, I like this one, makes use of infinite lazy lists
+
+;;Drop every nth item
+(defn ndrop
+  "[coll n] Drops every nth element of the given collection"
+  [coll n]
+  (if (empty? coll) [] (concat (take (- n 1) coll) (ndrop (drop  n coll) n)))) 
